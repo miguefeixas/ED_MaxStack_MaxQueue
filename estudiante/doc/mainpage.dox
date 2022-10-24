@@ -2,7 +2,29 @@
 
 # Introducción
 
-A RELLENAR POR EL ESTUDIANTE
+En la segunda práctica de la asignatura vamos a trabajar alrededor del concepto de abstracción y el
+ocultamiento de información creando dos TDA llamados MaxQueue y MaxStack. Además de implementarlos
+a partir de un TDA de la STL distinto al TDA resultante, añadiremos una capa de complejidad introduciendo el
+máximo de los valores.
+
+La primera parte de la práctica consiste en la implementación de los TDA mediante el uso de estructuras
+distintas a las deseadas. Por ejemplo, en el caso del MaxQueue, utilizaremos un stack de la STL y
+crearemos las funciones básicas de la cola a partir de las de la pila. Esto no debería suponer
+ningún tipo de problema para el usuario que utilice MaxQueue o MaxStack, puesto que las funciones
+deberían dar los mismos resultados que las de stack y queue. Este concepto es el ocultamiento de información:
+el usuario no conoce la implementación detrás de los TDA pero aún así es capaz de utilizarlos como
+si fueran pilas y colas "normales".
+
+En cuanto a la siguiente parte, tratamos de implementar un struct elemento que contiene el valor y
+el máximo de los valores del TDA. Cada uno de los TDA tiene una implementación distinta:
+- En el TDA MaxStack, queremos que cada elemento posea el máximo hasta ese momento. Es decir, el último elemento se tendrá a sí mismo de máximo porque no habrá elementos debajo que puedan ser mayores que él.
+- En el TDA MaxQueue, tendremos que tener en cuenta el valor máximo almacenado en el momento de sacar un elemento. En la cola, el máximo irá cambiando a medida que se modifican los elementos que la componen.
+
+Con estas implementaciones, nos damos cuenta de que nuestros MaxQueue y MaxStack de la primera parte prácticamente están
+implementados para admitir máximos y que solo necesitamos modificar una función. Esto es gracias a la
+asbtracción de los tipos cola y pila. Para más información sobre las funciones, consultar la lista de clases.
+
+A continuación se explica el funcionamiento de los ejecutables que componen la práctica.
 
 # Ejecutables
 
