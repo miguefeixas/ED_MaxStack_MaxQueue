@@ -1,177 +1,50 @@
-/*! \mainpage Abstracción. TDA Imagen.
-
-@authors María del Mar Martínez Robles, José Miguel Feixas Galdeano
+/*! \mainpage Título de la página principal
 
 # Introducción
 
-En esta primera práctica de la asignatura vamos a trabajar alrededor del concepto de abstracción usando el tipo de dato abstracto,
-de ahora en adelante TDA, denominado como Imagen. Mediante este, vamos a poder trabajar con imágenes formato PGM (por sus siglas en inglés
-Portable Gray Map) de forma cómoda, sin preocuparnos de como realizar operaciones básicas.
+En la segunda práctica de la asignatura vamos a trabajar alrededor del concepto de abstracción y el
+ocultamiento de información creando dos TDA llamados MaxQueue y MaxStack. Además de implementarlos
+a partir de un TDA de la STL distinto al TDA resultante, añadiremos una capa de complejidad introduciendo el
+máximo de los valores.
 
-Comentábamos que el TDA Imagen nos permite trabajar con imágenes con formato PGM, de forma breve, este formato consiste en una cabecera en texto
-que nos permite identificar que estamos ante una imagen PGM, así como algunos datos de la misma tales como las filas, las columnas, algunos
-comentarios y el nivel máximo de gris. Además de la cabecera, encontramos la imagen propiamente, representada como una matriz donde cada elemento
-de esta se corresponde con un pixel que contiene un nivel de gris que va del 0 (<strong>negro</strong>) al 255 (<span  style="color:white; background-color:black; font-weight: bold;">blanco</span>).
+La primera parte de la práctica consiste en la implementación de los TDA mediante el uso de estructuras
+distintas a las deseadas. Por ejemplo, en el caso del MaxQueue, utilizaremos un stack de la STL y
+crearemos las funciones básicas de la cola a partir de las de la pila. Esto no debería suponer
+ningún tipo de problema para el usuario que utilice MaxQueue o MaxStack, puesto que las funciones
+deberían dar los mismos resultados que las de stack y queue. Este concepto es el ocultamiento de información:
+el usuario no conoce la implementación detrás de los TDA pero aún así es capaz de utilizarlos como
+si fueran pilas y colas "normales".
 
-Además, en esta práctica vamos a asaltar el concepto de abstracción desde otro punto y es que al final de la misma vamos a modificar
-la representación interna del TDA Imagen, esto no nos supondrá mayor problema que modificar un par de métodos sencillos, mientras que el resto,
-incluyendo las operaciones más complejas que implementemos, se mantendrán sin ningún cambio en el código.
+En cuanto a la siguiente parte, tratamos de implementar un struct elemento que contiene el valor y
+el máximo de los valores del TDA. Cada uno de los TDA tiene una implementación distinta:
+- En el TDA MaxStack, queremos que cada elemento posea el máximo hasta ese momento. Es decir, el último elemento se tendrá a sí mismo de máximo porque no habrá elementos debajo que puedan ser mayores que él.
+- En el TDA MaxQueue, tendremos que tener en cuenta el valor máximo almacenado en el momento de sacar un elemento. En la cola, el máximo irá cambiando a medida que se modifican los elementos que la componen.
 
-Por tanto, podemos distinguir dos partes en el desarrollo de esta práctica, por un lado, la elaboración de operaciones de relativa complejidad
-sobre el TDA imagen y por otro el cambio de representación interna del TDA que nos ocupa y su posterior evaluación de la mejora en la eficiencia.
+Con estas implementaciones, nos damos cuenta de que nuestros MaxQueue y MaxStack de la primera parte prácticamente están
+implementados para admitir máximos y que solo necesitamos modificar una función. Esto es gracias a la
+asbtracción de los tipos cola y pila. Para más información sobre las funciones, consultar la lista de clases.
 
-## Operaciones sobre el TDA Imagen
-<ul>
-    <li>Método Crop(), extracción de subimágenes. El método Crop() nos permitirá realizar un recorte en una imagen con las dimensiones
-    que le especifiquemos.</li>
-    <li>Método Zoom2X(), Zoom de una porción de la imagen. Mediante Zoom2X() podremos llevar a cabo un aumento de 2x a una porción de la imagen
-    que especifiquemos.</li>
-    <li>Método Subsample(), crear un icono a partir de una imagen. Con esta función tendremos la posibilidad de reducir las dimensiones de
-    una imagen según el factor que le indiquemos.</li>
-    <li>Método AdjustContrast(), aumento del contraste de una imagen. Mediante la técnica de estiramiento del histograma vamos a poder aumentar
-    el contraste de una imagen.</li>
-    <li>Método ShuffleRows(), barajado de las filas de una imagen. ShuffleRows() va a realizar un barajado pseudoaleatorio de las filas de una imagen.</li>
-</ul>
-
-## Cambio en la representación interna y mejora de la eficiencia
-
-En esta parte de la práctica vamos a cambiar la representación interna de la misma. En un primer momento, la matriz con los niveles de gris que representa
-a la imagen se encontraba almacenada en memoria de forma que todas sus columnas estaban contiguas. Sin embargo, con el cambio que realizamos esto no tiene
-por qué ocurrir, lo que nos permitirá mejorar la eficiencia del método ShuffleRows() ya que solo vamos a tener que cambiar los punteros de las filas,
-pasando de O(filas x columnas) a O(filas).
+A continuación se explica el funcionamiento de los ejecutables que componen la práctica.
 
 # Ejecutables
 
-@image html invert.png
-## Negativo:
+## Pila_max
+@image html pila_max_522x.jpeg "Ejemplo del funcionamiento del ejecutable pila_max.cpp"
+Mete elementos en la pila máxima y gestiona cuál es el máximo del total
+de los elementos. Si el argumento es un número, lo añade con push() y revisa
+su máximo (si el número es mayor que el máximo actual de top(), el máximo es el mismo número).
+> __pila_max__ \[ números | .\ ]
+@param [números] Números que se quieren añadir a la pila.
+@param [.] Si se desea hacer pop del top de la pila, se usa un punto.
 
-Calcula el negativo de una imagen.
+## Cola_max
+@image html cola_max_ej.png "Ejemplo del funcionamiento del ejecutable cola_max.cpp"
+El funcionamiento de este ejecutable es similar al anterior, introduce o elimina elementos en
+un objeto del tipo @p MaxQueue según los argumentos que se le pasan en la llamada del programa. En caso de que
+el argumento sea un número añade este a la cola y, si es un punto, realiza un pop() y elimina el valor del front
+de la cola.
 
-> __negativo__ \<FichImagenOriginal\> \<FichImagenDestino\>
-@param "<FichImagenOriginal>" Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado de calcular el negativo.
-
-## Subimagen:
-
-Realiza un recorte en una imagen.
-
-> __subimagen__ \<FichImagenOriginal\> \<FichImagenDestino\> \<nrow> \<ncol> \<height> \<width>
-@param <FichImagenOriginal> Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado con el recorte.
-@param <nrow> Coordenada en el eje vertical de la esquina superior izquierda de la región a seleccionar.
-@param <ncol> Coordenada en el eje horizontal de la esquina superior izquierda de la región a seleccionar.
-@param <height> Número de filas de la zona que se va a recortar.
-@param <width> Número de columnas de la zona que se va a recortar.
-
-@image html EjemploSubImagen.png "Ejemplo del funcionamiento del ejecutable subimagen.cpp"
-
-## Zoom:
-
-Realiza un zoom 2x en una región de una imagen.
-
-> __zoom__ \<FichImagenOriginal\> \<FichImagenDestino\> \<nrow> \<ncol> \<side>
-@param <FichImagenOriginal> Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado con el zoom sobre la zona seleccionada.
-@param nrow Coordenada en el eje vertical de la esquina superior izquierda de la región a seleccionar.
-@param ncol Coordenada en el eje horizontal de la esquina superior izquierda de la región a seleccionar.
-@param side Tamaño del lado de la región a seleccionar en la que se aplica el zoom.
-
-@image html EjemploZoom.png "Ejemplo del funcionamiento del ejecutable zoom.cpp"
-
-## Icono:
-
-Realiza una reducción sobre la imagen.
-
-> __icono__ \<FichImagenOriginal\> \<FichImagenDestino\> \<factor>
-@param <FichImagenOriginal> Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado con el zoom sobre la zona seleccionada.
-@param <factor> Factor de reducción que se aplicará a la imagen original para obtener el icono.
-
-@image html EjemploIcon.png "Ejemplo del funcionamiento del ejecutable icono.cpp"
-
-## Contraste:
-
-Cambia el contraste de una imagen mediante _histogram streching_.
-
-> __contraste__ \<FichImagenOriginal\> \<FichImagenDestino\> \<in1> \<in2> \<out1> \<out2>
-@param <FichImagenOriginal> Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado con el zoom sobre la zona seleccionada.
-@param <in1> Umbral inferior de la imagen de entrada.
-@param <in2> Umbral superior de la imagen de entrada.
-@param <out1> Umbral inferior de la imagen de salida.
-@param <out2> Umbral superior de la imagen de salida.
-
-@image html EjemploContraste.png "Ejemplo del funcionamiento del ejecutable contraste.cpp"
-
-## Barajar:
-
-Baraja las filas de una imagen de forma pseudoaleatoria.
-
-> __barajar__ \<FichImagenOriginal\> \<FichImagenDestino\>
-@param <FichImagenOriginal> Imagen PGM a la que se va a calcular.
-@param <FichImagenDestino> Imagen PGM resultado con el zoom sobre la zona seleccionada.
-
-@image html EjemploShuffle.png "Ejemplo del funcionamiento del ejecutable barajar.cpp"
-
-# Cambio de representación interna y estudio de la eficiencia.
-
-En este apartado vamos a cambiar la representación interna del TDA Imagen con la idea de mejorar
-la eficiencia de __barajar__ en tanto que esta funcionalidad baraja únicamente las filas de
-una imagen. Para ello, partimos de la idea original en la que las columnas de la matriz se
-almacenaban de forma contigua en memoria y modificaremos esta representación a otra donde esto
-puede no cumplirse pero que nos beneficiará a la hora de implementar una nueva versión del
-método @p ShuffleRows().
-
-@image html CambioRep.png "Diferencia entre la representación original y la nueva."
-
-Para el estudio de la eficiencia hemos lanzado dos baterías de pruebas idénticas con cada implementación, en la primera
-dejamos constante a 200 el número columnas y vamos aumentando el número de filas de la imagen
-que generamos, comenzando en 1000 y llegando hasta 10000 con aumentos de 1000, es decir, un total de 10
-ejecuciones del programa. Posteriormente, repetimos la misma metodología con las columnas. Cabe aclarar que,
-para intentar disminuir el ruido en las pruebas, en cada ejecución repetimos la llamada a la función
-@p ShuffleRows() un total de 200 veces y luego sacamos la media del tiempo. Además, las pruebas se han realizado
-en la misma máquina, intentando mantener unas condiciones de carga en la misma similares entre las baterías de
-pruebas ejecutadas.
-
-Como podemos ver en las gráficas, con la implementación original los tiempos aumentan linealmente tanto si aumentamos
-las filas y mantenemos las columnas constantes como si lo hacemos al contrario. Esto se debe a que la eficiencia de
-@p ShuffleRows() con esta implementación es O(rowsxcols) pero al dejar constante uno de los dos valores los tiempos
-aumentan de forma lineal.
-
-Con la implementación nueva la eficiencia de nuestra función se reduce a O(rows) por tanto, vemos que si aumentamos las filas manteniendo
-las columnas constantes el tiempo aumenta de forma lineal, pero, en cambio, si dejamos fijas las filas y aumentamos
-las columnas vemos que el tiempo se mantiene constante en tanto que esta nueva implementación trabaja únicamente
-con las filas de la imagen.
-
-@image html DiferenciasImplementacion.png "Comparación entre las dos implementaciones."
-
-Continuando con este breve estudio de la eficiencia híbrida, hemos sacado las constantes de la complejidad teórica y
-hemos ajustado las gráficas obtenidas con las funciones teóricas. Los resultados han sido los siguientes:
-
-### Implementación original
-<ul>
-    <li>Aumentando las filas: Entendiendo que la eficiencia en esta implementación es
-    O(rowsxcols) pero en el programa mantenemos constantes las columnas, los tiempos de ejecución conforme aumentamos
-    las filas deberían ser lineales. Si ajustamos los tiempos obtenidos con la función f(x)=a*x+b Gnuplot nos arroja
-    que la constante @p a toma el valor de 3.6e-06 y @p b de 0.00014.</li>
-    <li>Aumentando las columnas: Aplicando la misma lógica que en el punto anterior, ajustamos los datos a la función
-    f(x)=a*x+b y obtenemos que la constante @p a tiene un valor de 3.5e-06 y @p b de 0.00034.</li>
-</ul>
-
-@image html AjusteOriginal.png "Ajuste de los tiempos en la implementación original con la función lineal."
-
-### Implementación nueva:
-<ul>
-    <li>Aumentando las filas: En este caso, la nueva implementación tiene una eficiencia O(rows) luego solo va a importar
-    la variación que hagamos en las filas de la imagen, en este primer caso que dejamos las columnas constantes y aumentamos
-    las filas, el tiempo va a aumentar de forma lineal, por tanto, vamos a ajustar los datos a la función lineal. De este ajuste
-    obtenemos que @p a vale 2.27e-09 y @p b vale -6.66e-08.</li>
-    <li>Aumentando las columnas: Al ser esta implementación completamente agnóstica al número de columnas de la imagen
-    los tiempos que vamos a obtener aumentando columnas y dejando constantes las filas van a ser constantes, luego vamos a ajustar
-    los tiempos obtenidos a la función f(x)=a. De este ajuste vemos que @p a toma el valor 6.73e-07.</li>
-</ul>
-
-@image html AjusteNuevo.png "Ajuste de los tiempos en la implementación nueva con la función lineal para filas y constante para las columnas."
-
-
+> __cola_max__ \[ números | .\ ]
+@param [números] Números que se quieren añadir a la pila.
+@param [.] Si se desea hacer pop del front de la cola, se usa un punto.
 */
