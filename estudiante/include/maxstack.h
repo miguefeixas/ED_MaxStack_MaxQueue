@@ -23,12 +23,12 @@ inline ostream& operator<<(ostream & os, const element &e) {
 /**
  * @brief TDA MaxStack
  *
- * Un objeto del tipo TDA MaxStack implementa una cola similar a la de la STL con las operaciones básicas
+ * Un objeto del tipo TDA MaxStack implementa una pila similar a la de la STL con las operaciones básicas
  * de la misma, push(), pop(), front(), size() y empty() pero con la particularidad de que,
  * en su representación interna, se usa un objeto del tipo Queue de la STL.
  *
- * Este TDA almacena objetos de tipo element de forma que, en cada elemento de la cola, vamos a encontrar
- * dos valores, el valor propio y el valor máximo que hay en la cola.
+ * Este TDA almacena objetos de tipo element de forma que, en cada elemento de la pila, vamos a encontrar
+ * dos valores, el valor propio y el valor máximo que hay en la pila.
  *
  * @author María del Mar Martinez Robles
  * @author José Miguel Feixas Galdeano
