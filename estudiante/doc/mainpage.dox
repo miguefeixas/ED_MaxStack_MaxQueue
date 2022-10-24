@@ -6,6 +6,12 @@ A RELLENAR POR EL ESTUDIANTE
 
 # Ejecutables
 
-A RELLENAR POR EL ESTUDIANTE
-
+## Pila_max
+@image html pila_max_522x.jpeg "Ejemplo del funcionamiento del ejecutable pila_max.cpp"
+Mete elementos en la pila máxima y gestiona cuál es el máximo del total
+de los elementos. Si el argumento es un número, lo añade con push() y revisa
+su máximo (si el número es mayor que el máximo actual de top(), el máximo es el mismo número).
+> __pila_max__ \[ números | .\ ]
+@param [números] Números que se quieren añadir a la pila.
+@param [.] Si se desea hacer pop del top de la pila, se usa un punto.
 */
